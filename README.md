@@ -1,7 +1,7 @@
 # theory-of-behavior
-A Fundamental Comprehensive Algorithm for Human Behavior — formal behavioral decision algorithm with Python implementation
-The Theory of Behavior
-A Fundamental Comprehensive Algorithm for Human Behavior
+A Fundamental Comprehensive Algorithm for Human Behavior — formal behavioral decision algorithm with Python implementation.
+The Theory of Behavior -
+A Fundamental Comprehensive Algorithm for Human Behavior.
 D.M. Chabon — Applied Behavioral Science Strategies
 
 Overview
