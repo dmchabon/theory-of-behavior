@@ -4,6 +4,10 @@ The Theory of Behavior -
 A Fundamental Comprehensive Algorithm for Human Behavior.
 D.M. Chabon — Applied Behavioral Science Strategies
 
+## 🚀 Live Interactive Walkthrough
+**Run the algorithm in your browser — no installation required:**
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1mkdBS-rsPmBlGhUM2i94LhsQk4DK8iCC?usp=sharing)
+
 Overview
 This repository contains the Python implementation of The Theory of Behavior — a formally specified, invariant algorithm modeling how people reach behavioral decisions.
 The algorithm treats behavioral options as sets of perceived, value-laden attributes computed from three factors:
