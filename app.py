@@ -1,5 +1,7 @@
+App v2 · PY
 import streamlit as st
-
+import pandas as pd
+ 
 # ============================================================
 # PAGE CONFIG
 # ============================================================
@@ -8,14 +10,14 @@ st.set_page_config(
     page_icon="🧠",
     layout="wide"
 )
-
+ 
 # ============================================================
 # CORE ALGORITHM
 # ============================================================
-
+ 
 def compute_valence(K, S, C):
     return round(C * (S * K), 4)
-
+ 
 def compute_B_value(attributes):
     R_total = 0.0
     P_total = 0.0
@@ -30,7 +32,7 @@ def compute_B_value(attributes):
             P_total += valence
     B = R_total - P_total
     return round(R_total, 4), round(P_total, 4), round(B, 4)
-
+ 
 def select_behavior(options, D, epsilon=0.01):
     results = []
     for option in options:
@@ -43,20 +45,20 @@ def select_behavior(options, D, epsilon=0.01):
     results.sort(key=lambda x: x['B_star'], reverse=True)
     conflict = len(results) >= 2 and abs(results[0]['B_star'] - results[1]['B_star']) < epsilon
     return results, conflict
-
+ 
 # ============================================================
 # HEADER
 # ============================================================
-
+ 
 st.title("The Theory of Behavior")
 st.subheader("A Fundamental Comprehensive Algorithm for Human Behavior")
 st.markdown("*D.M. Chabon — Applied Behavioral Science Strategies*")
 st.markdown("---")
-
+ 
 # ============================================================
 # ABOUT
 # ============================================================
-
+ 
 with st.expander("ℹ️ About this app", expanded=False):
     st.markdown("""
     This app demonstrates **The Theory of Behavior** — a formally specified, invariant algorithm 
@@ -76,27 +78,28 @@ with st.expander("ℹ️ About this app", expanded=False):
     **Full paper:** [SSRN](https://ssrn.com/abstract=6242578) | 
     **Code:** [GitHub](https://github.com/dmchabon/theory-of-behavior)
     """)
-
+ 
 # ============================================================
 # SCENARIO
 # ============================================================
-
+ 
 st.markdown("## The Bonus Decision Scenario")
 st.markdown("""
 A young man receives a cash bonus and considers four behavioral options. 
 Adjust the sliders to change his perceived attribute values and watch the algorithm predict which behavior he will enact.
 """)
-
+ 
 st.markdown("---")
-
+ 
 # ============================================================
 # SLIDERS
 # ============================================================
-
+ 
 col1, col2 = st.columns([1, 2])
-
+ 
 with col1:
     st.markdown("### Adjust Attribute Values")
+    
     st.markdown("**Decision Salience**")
     D = st.slider("D — Decision Salience (from umwelt)", 0.0, 1.0, 0.8, 0.1)
     
@@ -110,34 +113,39 @@ with col1:
     
     st.markdown("**Invest in CD — Reward Attributes**")
     k_security_cd = st.slider("Security (CD) — Rank (K)", 0, 10, 7)
-
+    k_return_cd = st.slider("Return (CD) — Rank (K)", 0, 10, 3)
+ 
+    st.markdown("**Invest in Stock — Reward Attributes**")
+    k_return_stock = st.slider("Return Potential (Stock) — Rank (K)", 0, 10, 6)
+    k_extrinsic_stock = st.slider("Extrinsic Value (Stock) — Rank (K)", 0, 10, 7)
+ 
 # ============================================================
 # COMPUTE
 # ============================================================
-
+ 
 options = [
     {
         'name': 'Invest in CD',
         'attributes': [
-            {'name': 'Security',       'K': k_security_cd, 'S': 0.4, 'C': 0.9, 'type': 'reward'},
-            {'name': 'Return',         'K': 3, 'S': 0.8, 'C': 0.9, 'type': 'reward'},
-            {'name': 'Extrinsic Value','K': 1, 'S': 0.1, 'C': 0.1, 'type': 'reward'},
+            {'name': 'Security',       'K': k_security_cd,   'S': 0.4, 'C': 0.9, 'type': 'reward'},
+            {'name': 'Return',         'K': k_return_cd,     'S': 0.8, 'C': 0.9, 'type': 'reward'},
+            {'name': 'Extrinsic Value','K': 1,               'S': 0.1, 'C': 0.1, 'type': 'reward'},
         ]
     },
     {
         'name': 'Invest in Stock',
         'attributes': [
-            {'name': 'Security',       'K': 3, 'S': 0.7, 'C': 0.3, 'type': 'reward'},
-            {'name': 'Return',         'K': 6, 'S': 0.7, 'C': 0.4, 'type': 'reward'},
-            {'name': 'Extrinsic Value','K': 7, 'S': 0.7, 'C': 0.2, 'type': 'reward'},
+            {'name': 'Security',       'K': 3,                   'S': 0.7, 'C': 0.3, 'type': 'reward'},
+            {'name': 'Return',         'K': k_return_stock,      'S': 0.7, 'C': 0.4, 'type': 'reward'},
+            {'name': 'Extrinsic Value','K': k_extrinsic_stock,   'S': 0.7, 'C': 0.2, 'type': 'reward'},
         ]
     },
     {
         'name': 'Buy New Car',
         'attributes': [
-            {'name': 'Nicer Travel',      'K': k_travel,      'S': 0.7, 'C': 0.4, 'type': 'reward'},
-            {'name': 'Impress Girlfriend','K': k_girlfriend,  'S': 0.6, 'C': 0.3, 'type': 'reward'},
-            {'name': 'Extrinsic Value',   'K': k_extrinsic_car,'S': 0.7, 'C': 0.7, 'type': 'reward'},
+            {'name': 'Nicer Travel',      'K': k_travel,        'S': 0.7, 'C': 0.4, 'type': 'reward'},
+            {'name': 'Impress Girlfriend','K': k_girlfriend,    'S': 0.6, 'C': 0.3, 'type': 'reward'},
+            {'name': 'Extrinsic Value',   'K': k_extrinsic_car, 'S': 0.7, 'C': 0.7, 'type': 'reward'},
         ]
     },
     {
@@ -147,13 +155,13 @@ options = [
         ]
     },
 ]
-
+ 
 results, conflict = select_behavior(options, D)
-
+ 
 # ============================================================
 # RESULTS
 # ============================================================
-
+ 
 with col2:
     st.markdown("### Behavioral Decision Computation")
     
@@ -166,15 +174,12 @@ with col2:
     
     st.markdown("**Ranked Options by B* Value:**")
     
-    # Bar chart
-    import pandas as pd
     df = pd.DataFrame({
         'Option': [r['name'] for r in results],
         'B*': [r['B_star'] for r in results]
     })
     st.bar_chart(df.set_index('Option'))
     
-    # Details table
     st.markdown("**Full Computation:**")
     table_data = []
     for r in results:
@@ -187,27 +192,27 @@ with col2:
             'B* = D×B': r['B_star']
         })
     st.dataframe(pd.DataFrame(table_data), hide_index=True)
-
+ 
 # ============================================================
 # INVARIANCE NOTE
 # ============================================================
-
+ 
 st.markdown("---")
 st.markdown("""
 ### Demonstrating Invariance
-
+ 
 Try adjusting the sliders above. Notice that:
 - The **same algorithm** runs regardless of what values you enter
 - **Different attribute values** produce different enacted behaviors  
 - This demonstrates **invariance** — the process is universal, the inputs vary
-
+ 
 *"The alignment problem may be fundamentally a Rank problem."*
 """)
-
+ 
 # ============================================================
 # FOOTER
 # ============================================================
-
+ 
 st.markdown("---")
 st.markdown("""
 **D.M. Chabon** — Applied Behavioral Science Strategies  
