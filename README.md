@@ -4,6 +4,10 @@ The Theory of Behavior -
 A Fundamental Comprehensive Algorithm for Human Behavior.
 D.M. Chabon — Applied Behavioral Science Strategies
 
+## 🎯 Interactive Web App
+**No installation required — runs instantly in your browser:**
+[Launch Interactive App](https://theory-of-behavior.streamlit.app)
+
 ## 🚀 Live Interactive Walkthrough
 **Run the algorithm in your browser — no installation required:**
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1mkdBS-rsPmBlGhUM2i94LhsQk4DK8iCC?usp=sharing)
