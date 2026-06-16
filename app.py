@@ -54,15 +54,48 @@ st.subheader("A Fundamental Comprehensive Algorithm for Human Behavior")
 st.markdown("*D.M. Chabon — Applied Behavioral Science Strategies*")
 st.markdown("---")
  
-st.info("A formally specified behavioral decision algorithm. Each option's attributes are evaluated using three factors — **Rank (K)**: importance; **Saturation (S)**: proximity to optimal level; **Contingency (C)**: probability of realization. The algorithm computes V = C × (S × K), sums rewards minus punishments to produce B, applies decision salience D, and enacts the highest B* option.")
+# ============================================================
+# INTRODUCTION
+# ============================================================
+ 
+st.markdown("### This model illustrates a formally specified behavioral decision algorithm")
+ 
+st.markdown("---")
+ 
+st.markdown("**The concept:**")
+st.markdown("""
+Decisions are defined as behaviors that are selected from options. The process to consider 
+making any specific decision, a decision in itself, is referred to as salience.
+ 
+All behavior options have attributes — a quality, trait, or feature inherent to that option. 
+It is proposed that the impact of each option's attributes are evaluated using three factors — 
+**Rank (K)**: relative importance; **Saturation (S)**: proximity to optimal level; 
+**Contingency (C)**: probability of realization. The algorithm computes V = C × (S × K), 
+sums rewards minus punishments to produce B, applies decision salience D, and enacts 
+the highest B* option.
+""")
+ 
+st.markdown("---")
+ 
+st.markdown("**The illustration:**")
+st.markdown("""
+A young man receives a cash bonus and considers four behavioral options: buying a new car, 
+holding on to the money (doing nothing), investing in a CD or investing in stock. 
+The decision outcome will vary with the weight of each option's factors. See how each 
+factor works — expand each option below to adjust its **Rank (K)**, **Saturation (S)**, 
+and **Contingency (C)** values. The decision he will make (illustrated in the bar chart) 
+updates instantly as you adjust any slider.
+""")
+ 
+st.markdown("---")
  
 # ============================================================
 # ABOUT
 # ============================================================
  
-with st.expander("ℹ️ About this app", expanded=False):
+with st.expander("ℹ️ About The Theory of Behavior", expanded=False):
     st.markdown("""
-    This app demonstrates **The Theory of Behavior** — a formally specified, invariant algorithm 
+    **The Theory of Behavior** is a formally specified, invariant algorithm 
     modeling how people reach behavioral decisions.
     
     **Four distinctive properties:**
@@ -81,17 +114,6 @@ with st.expander("ℹ️ About this app", expanded=False):
     **Full paper:** [SSRN](https://ssrn.com/abstract=6242578) | 
     **Code:** [GitHub](https://github.com/dmchabon/theory-of-behavior)
     """)
- 
-# ============================================================
-# SCENARIO
-# ============================================================
- 
-st.markdown("## The Bonus Decision Scenario")
-st.markdown("""
-A young man receives a cash bonus and considers four behavioral options. 
-Expand each option below to adjust its **Rank (K)**, **Saturation (S)**, and **Contingency (C)** values.
-The bar chart updates instantly as you adjust any slider.
-""")
  
 st.markdown("---")
  
