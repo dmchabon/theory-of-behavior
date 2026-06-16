@@ -70,9 +70,11 @@ with st.expander("ℹ️ About this app", expanded=False):
     - **Quantifying** — previously unquantifiable states (satisfaction, anxiety, fear, despair) defined as computable conditions
     
     **The core equations:**
-    - V(aⱼ) = C × (S × K)
-    - B(Bᵢ) = R(Bᵢ) − P(Bᵢ)  
-    - B*(Bᵢ) = D × B(Bᵢ)
+    - V(aⱼ) = C × (S × K) — attribute valence
+    - B(Bᵢ) = R(Bᵢ) − P(Bᵢ) — behavioral option value
+    - B*(Bᵢ) = D × B(Bᵢ) — salience adjusted value
+    
+    **K** = Rank (0–10) | **S** = Saturation (0–1) | **C** = Contingency (0–1) | **D** = Decision Salience (0–1)
     
     **Full paper:** [SSRN](https://ssrn.com/abstract=6242578) | 
     **Code:** [GitHub](https://github.com/dmchabon/theory-of-behavior)
@@ -85,38 +87,93 @@ with st.expander("ℹ️ About this app", expanded=False):
 st.markdown("## The Bonus Decision Scenario")
 st.markdown("""
 A young man receives a cash bonus and considers four behavioral options. 
-Adjust the sliders to change his perceived attribute values and watch the algorithm predict which behavior he will enact.
+Adjust **Rank (K)**, **Saturation (S)**, and **Contingency (C)** for each attribute 
+and watch the algorithm predict which behavior he will enact.
 """)
 
 st.markdown("---")
 
 # ============================================================
-# SLIDERS
+# LAYOUT
 # ============================================================
 
-col1, col2 = st.columns([1, 2])
+slider_col, result_col = st.columns([1, 2])
 
-with col1:
-    st.markdown("### Adjust Attribute Values")
-    
-    st.markdown("**Decision Salience**")
-    D = st.slider("D — Decision Salience (from umwelt)", 0.0, 1.0, 0.8, 0.1)
-    
-    st.markdown("**Buy New Car — Reward Attributes**")
-    k_travel = st.slider("Nicer Travel — Rank (K)", 0, 10, 8)
-    k_girlfriend = st.slider("Impress Girlfriend — Rank (K)", 0, 10, 8)
-    k_extrinsic_car = st.slider("Extrinsic Value (Car) — Rank (K)", 0, 10, 8)
-    
-    st.markdown("**Do Nothing — Reward Attributes**")
-    k_cash = st.slider("Have Cash — Rank (K)", 0, 10, 7)
-    
-    st.markdown("**Invest in CD — Reward Attributes**")
-    k_security_cd = st.slider("Security (CD) — Rank (K)", 0, 10, 7)
-    k_return_cd = st.slider("Return (CD) — Rank (K)", 0, 10, 3)
+with slider_col:
 
-    st.markdown("**Invest in Stock — Reward Attributes**")
-    k_return_stock = st.slider("Return Potential (Stock) — Rank (K)", 0, 10, 6)
-    k_extrinsic_stock = st.slider("Extrinsic Value (Stock) — Rank (K)", 0, 10, 7)
+    st.markdown("### Attribute Values")
+    
+    D = st.slider("**D — Decision Salience** (from umwelt)", 0.0, 1.0, 0.8, 0.1)
+    
+    st.markdown("---")
+
+    # ── BUY NEW CAR ──
+    st.markdown("#### 🚗 Buy New Car")
+    
+    st.markdown("*Nicer Travel*")
+    car_travel_k = st.slider("K — Rank", 0, 10, 8, key="car_travel_k")
+    car_travel_s = st.slider("S — Saturation", 0.0, 1.0, 0.7, 0.1, key="car_travel_s")
+    car_travel_c = st.slider("C — Contingency", 0.0, 1.0, 0.4, 0.1, key="car_travel_c")
+
+    st.markdown("*Impress Girlfriend*")
+    car_gf_k = st.slider("K — Rank", 0, 10, 8, key="car_gf_k")
+    car_gf_s = st.slider("S — Saturation", 0.0, 1.0, 0.6, 0.1, key="car_gf_s")
+    car_gf_c = st.slider("C — Contingency", 0.0, 1.0, 0.3, 0.1, key="car_gf_c")
+
+    st.markdown("*Extrinsic Value*")
+    car_ext_k = st.slider("K — Rank", 0, 10, 8, key="car_ext_k")
+    car_ext_s = st.slider("S — Saturation", 0.0, 1.0, 0.7, 0.1, key="car_ext_s")
+    car_ext_c = st.slider("C — Contingency", 0.0, 1.0, 0.7, 0.1, key="car_ext_c")
+
+    st.markdown("---")
+
+    # ── DO NOTHING ──
+    st.markdown("#### 💰 Do Nothing")
+
+    st.markdown("*Have Cash*")
+    nothing_k = st.slider("K — Rank", 0, 10, 7, key="nothing_k")
+    nothing_s = st.slider("S — Saturation", 0.0, 1.0, 0.9, 0.1, key="nothing_s")
+    nothing_c = st.slider("C — Contingency", 0.0, 1.0, 0.9, 0.1, key="nothing_c")
+
+    st.markdown("---")
+
+    # ── INVEST IN CD ──
+    st.markdown("#### 🏦 Invest in CD")
+
+    st.markdown("*Security*")
+    cd_sec_k = st.slider("K — Rank", 0, 10, 7, key="cd_sec_k")
+    cd_sec_s = st.slider("S — Saturation", 0.0, 1.0, 0.4, 0.1, key="cd_sec_s")
+    cd_sec_c = st.slider("C — Contingency", 0.0, 1.0, 0.9, 0.1, key="cd_sec_c")
+
+    st.markdown("*Return*")
+    cd_ret_k = st.slider("K — Rank", 0, 10, 3, key="cd_ret_k")
+    cd_ret_s = st.slider("S — Saturation", 0.0, 1.0, 0.8, 0.1, key="cd_ret_s")
+    cd_ret_c = st.slider("C — Contingency", 0.0, 1.0, 0.9, 0.1, key="cd_ret_c")
+
+    st.markdown("*Extrinsic Value*")
+    cd_ext_k = st.slider("K — Rank", 0, 10, 1, key="cd_ext_k")
+    cd_ext_s = st.slider("S — Saturation", 0.0, 1.0, 0.1, 0.1, key="cd_ext_s")
+    cd_ext_c = st.slider("C — Contingency", 0.0, 1.0, 0.1, 0.1, key="cd_ext_c")
+
+    st.markdown("---")
+
+    # ── INVEST IN STOCK ──
+    st.markdown("#### 📈 Invest in Stock")
+
+    st.markdown("*Security*")
+    stk_sec_k = st.slider("K — Rank", 0, 10, 3, key="stk_sec_k")
+    stk_sec_s = st.slider("S — Saturation", 0.0, 1.0, 0.7, 0.1, key="stk_sec_s")
+    stk_sec_c = st.slider("C — Contingency", 0.0, 1.0, 0.3, 0.1, key="stk_sec_c")
+
+    st.markdown("*Return Potential*")
+    stk_ret_k = st.slider("K — Rank", 0, 10, 6, key="stk_ret_k")
+    stk_ret_s = st.slider("S — Saturation", 0.0, 1.0, 0.7, 0.1, key="stk_ret_s")
+    stk_ret_c = st.slider("C — Contingency", 0.0, 1.0, 0.4, 0.1, key="stk_ret_c")
+
+    st.markdown("*Extrinsic Value*")
+    stk_ext_k = st.slider("K — Rank", 0, 10, 7, key="stk_ext_k")
+    stk_ext_s = st.slider("S — Saturation", 0.0, 1.0, 0.7, 0.1, key="stk_ext_s")
+    stk_ext_c = st.slider("C — Contingency", 0.0, 1.0, 0.2, 0.1, key="stk_ext_c")
 
 # ============================================================
 # COMPUTE
@@ -126,31 +183,31 @@ options = [
     {
         'name': 'Invest in CD',
         'attributes': [
-            {'name': 'Security',       'K': k_security_cd,   'S': 0.4, 'C': 0.9, 'type': 'reward'},
-            {'name': 'Return',         'K': k_return_cd,     'S': 0.8, 'C': 0.9, 'type': 'reward'},
-            {'name': 'Extrinsic Value','K': 1,               'S': 0.1, 'C': 0.1, 'type': 'reward'},
+            {'name': 'Security',       'K': cd_sec_k, 'S': cd_sec_s, 'C': cd_sec_c, 'type': 'reward'},
+            {'name': 'Return',         'K': cd_ret_k, 'S': cd_ret_s, 'C': cd_ret_c, 'type': 'reward'},
+            {'name': 'Extrinsic Value','K': cd_ext_k, 'S': cd_ext_s, 'C': cd_ext_c, 'type': 'reward'},
         ]
     },
     {
         'name': 'Invest in Stock',
         'attributes': [
-            {'name': 'Security',       'K': 3,                   'S': 0.7, 'C': 0.3, 'type': 'reward'},
-            {'name': 'Return',         'K': k_return_stock,      'S': 0.7, 'C': 0.4, 'type': 'reward'},
-            {'name': 'Extrinsic Value','K': k_extrinsic_stock,   'S': 0.7, 'C': 0.2, 'type': 'reward'},
+            {'name': 'Security',       'K': stk_sec_k, 'S': stk_sec_s, 'C': stk_sec_c, 'type': 'reward'},
+            {'name': 'Return',         'K': stk_ret_k, 'S': stk_ret_s, 'C': stk_ret_c, 'type': 'reward'},
+            {'name': 'Extrinsic Value','K': stk_ext_k, 'S': stk_ext_s, 'C': stk_ext_c, 'type': 'reward'},
         ]
     },
     {
         'name': 'Buy New Car',
         'attributes': [
-            {'name': 'Nicer Travel',      'K': k_travel,        'S': 0.7, 'C': 0.4, 'type': 'reward'},
-            {'name': 'Impress Girlfriend','K': k_girlfriend,    'S': 0.6, 'C': 0.3, 'type': 'reward'},
-            {'name': 'Extrinsic Value',   'K': k_extrinsic_car, 'S': 0.7, 'C': 0.7, 'type': 'reward'},
+            {'name': 'Nicer Travel',      'K': car_travel_k, 'S': car_travel_s, 'C': car_travel_c, 'type': 'reward'},
+            {'name': 'Impress Girlfriend','K': car_gf_k,     'S': car_gf_s,     'C': car_gf_c,     'type': 'reward'},
+            {'name': 'Extrinsic Value',   'K': car_ext_k,    'S': car_ext_s,    'C': car_ext_c,    'type': 'reward'},
         ]
     },
     {
         'name': 'Do Nothing',
         'attributes': [
-            {'name': 'Have Cash', 'K': k_cash, 'S': 0.9, 'C': 0.9, 'type': 'reward'},
+            {'name': 'Have Cash', 'K': nothing_k, 'S': nothing_s, 'C': nothing_c, 'type': 'reward'},
         ]
     },
 ]
@@ -161,7 +218,7 @@ results, conflict = select_behavior(options, D)
 # RESULTS
 # ============================================================
 
-with col2:
+with result_col:
     st.markdown("### Behavioral Decision Computation")
     
     enacted = results[0]
@@ -192,21 +249,17 @@ with col2:
         })
     st.dataframe(pd.DataFrame(table_data), hide_index=True)
 
-# ============================================================
-# INVARIANCE NOTE
-# ============================================================
-
-st.markdown("---")
-st.markdown("""
-### Demonstrating Invariance
-
-Try adjusting the sliders above. Notice that:
-- The **same algorithm** runs regardless of what values you enter
-- **Different attribute values** produce different enacted behaviors  
-- This demonstrates **invariance** — the process is universal, the inputs vary
-
-*"The alignment problem may be fundamentally a Rank problem."*
-""")
+    st.markdown("---")
+    st.markdown("""
+    ### Demonstrating Invariance
+    
+    Adjust any slider above and watch the computation update instantly.
+    - The **same algorithm** runs regardless of what values you enter
+    - **Different attribute values** produce different enacted behaviors  
+    - This demonstrates **invariance** — the process is universal, the inputs vary
+    
+    *"The alignment problem may be fundamentally a Rank problem."*
+    """)
 
 # ============================================================
 # FOOTER
