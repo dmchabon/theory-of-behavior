@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-
+ 
 # ============================================================
 # PAGE CONFIG
 # ============================================================
@@ -9,14 +9,14 @@ st.set_page_config(
     page_icon="🧠",
     layout="wide"
 )
-
+ 
 # ============================================================
 # CORE ALGORITHM
 # ============================================================
-
+ 
 def compute_valence(K, S, C):
     return round(C * (S * K), 4)
-
+ 
 def compute_B_value(attributes):
     R_total = 0.0
     P_total = 0.0
@@ -31,7 +31,7 @@ def compute_B_value(attributes):
             P_total += valence
     B = R_total - P_total
     return round(R_total, 4), round(P_total, 4), round(B, 4)
-
+ 
 def select_behavior(options, D, epsilon=0.01):
     results = []
     for option in options:
@@ -44,20 +44,22 @@ def select_behavior(options, D, epsilon=0.01):
     results.sort(key=lambda x: x['B_star'], reverse=True)
     conflict = len(results) >= 2 and abs(results[0]['B_star'] - results[1]['B_star']) < epsilon
     return results, conflict
-
+ 
 # ============================================================
 # HEADER
 # ============================================================
-
+ 
 st.title("The Theory of Behavior")
 st.subheader("A Fundamental Comprehensive Algorithm for Human Behavior")
 st.markdown("*D.M. Chabon — Applied Behavioral Science Strategies*")
 st.markdown("---")
-
+ 
+st.info("A formally specified behavioral decision algorithm. Each option's attributes are evaluated using three factors — **Rank (K)**: importance; **Saturation (S)**: proximity to optimal level; **Contingency (C)**: probability of realization. The algorithm computes V = C × (S × K), sums rewards minus punishments to produce B, applies decision salience D, and enacts the highest B* option.")
+ 
 # ============================================================
 # ABOUT
 # ============================================================
-
+ 
 with st.expander("ℹ️ About this app", expanded=False):
     st.markdown("""
     This app demonstrates **The Theory of Behavior** — a formally specified, invariant algorithm 
@@ -79,93 +81,93 @@ with st.expander("ℹ️ About this app", expanded=False):
     **Full paper:** [SSRN](https://ssrn.com/abstract=6242578) | 
     **Code:** [GitHub](https://github.com/dmchabon/theory-of-behavior)
     """)
-
+ 
 # ============================================================
 # SCENARIO
 # ============================================================
-
+ 
 st.markdown("## The Bonus Decision Scenario")
 st.markdown("""
 A young man receives a cash bonus and considers four behavioral options. 
 Expand each option below to adjust its **Rank (K)**, **Saturation (S)**, and **Contingency (C)** values.
 The bar chart updates instantly as you adjust any slider.
 """)
-
+ 
 st.markdown("---")
-
+ 
 # ============================================================
 # LAYOUT
 # ============================================================
-
+ 
 slider_col, result_col = st.columns([1, 2])
-
+ 
 with slider_col:
-
+ 
     st.markdown("### Attribute Values")
     D = st.slider("**D — Decision Salience** (from umwelt)", 0.0, 1.0, 0.8, 0.1)
-
+ 
     # ── BUY NEW CAR ──
     with st.expander("🚗 Buy New Car", expanded=False):
         st.markdown("*Nicer Travel*")
         car_travel_k = st.slider("K — Rank", 0, 10, 8, key="car_travel_k")
         car_travel_s = st.slider("S — Saturation", 0.0, 1.0, 0.7, 0.1, key="car_travel_s")
         car_travel_c = st.slider("C — Contingency", 0.0, 1.0, 0.4, 0.1, key="car_travel_c")
-
+ 
         st.markdown("*Impress Girlfriend*")
         car_gf_k = st.slider("K — Rank", 0, 10, 8, key="car_gf_k")
         car_gf_s = st.slider("S — Saturation", 0.0, 1.0, 0.6, 0.1, key="car_gf_s")
         car_gf_c = st.slider("C — Contingency", 0.0, 1.0, 0.3, 0.1, key="car_gf_c")
-
+ 
         st.markdown("*Extrinsic Value*")
         car_ext_k = st.slider("K — Rank", 0, 10, 8, key="car_ext_k")
         car_ext_s = st.slider("S — Saturation", 0.0, 1.0, 0.7, 0.1, key="car_ext_s")
         car_ext_c = st.slider("C — Contingency", 0.0, 1.0, 0.7, 0.1, key="car_ext_c")
-
+ 
     # ── DO NOTHING ──
     with st.expander("💰 Do Nothing", expanded=False):
         st.markdown("*Have Cash*")
         nothing_k = st.slider("K — Rank", 0, 10, 7, key="nothing_k")
         nothing_s = st.slider("S — Saturation", 0.0, 1.0, 0.9, 0.1, key="nothing_s")
         nothing_c = st.slider("C — Contingency", 0.0, 1.0, 0.9, 0.1, key="nothing_c")
-
+ 
     # ── INVEST IN CD ──
     with st.expander("🏦 Invest in CD", expanded=False):
         st.markdown("*Security*")
         cd_sec_k = st.slider("K — Rank", 0, 10, 7, key="cd_sec_k")
         cd_sec_s = st.slider("S — Saturation", 0.0, 1.0, 0.4, 0.1, key="cd_sec_s")
         cd_sec_c = st.slider("C — Contingency", 0.0, 1.0, 0.9, 0.1, key="cd_sec_c")
-
+ 
         st.markdown("*Return*")
         cd_ret_k = st.slider("K — Rank", 0, 10, 3, key="cd_ret_k")
         cd_ret_s = st.slider("S — Saturation", 0.0, 1.0, 0.8, 0.1, key="cd_ret_s")
         cd_ret_c = st.slider("C — Contingency", 0.0, 1.0, 0.9, 0.1, key="cd_ret_c")
-
+ 
         st.markdown("*Extrinsic Value*")
         cd_ext_k = st.slider("K — Rank", 0, 10, 1, key="cd_ext_k")
         cd_ext_s = st.slider("S — Saturation", 0.0, 1.0, 0.1, 0.1, key="cd_ext_s")
         cd_ext_c = st.slider("C — Contingency", 0.0, 1.0, 0.1, 0.1, key="cd_ext_c")
-
+ 
     # ── INVEST IN STOCK ──
     with st.expander("📈 Invest in Stock", expanded=False):
         st.markdown("*Security*")
         stk_sec_k = st.slider("K — Rank", 0, 10, 3, key="stk_sec_k")
         stk_sec_s = st.slider("S — Saturation", 0.0, 1.0, 0.7, 0.1, key="stk_sec_s")
         stk_sec_c = st.slider("C — Contingency", 0.0, 1.0, 0.3, 0.1, key="stk_sec_c")
-
+ 
         st.markdown("*Return Potential*")
         stk_ret_k = st.slider("K — Rank", 0, 10, 6, key="stk_ret_k")
         stk_ret_s = st.slider("S — Saturation", 0.0, 1.0, 0.7, 0.1, key="stk_ret_s")
         stk_ret_c = st.slider("C — Contingency", 0.0, 1.0, 0.4, 0.1, key="stk_ret_c")
-
+ 
         st.markdown("*Extrinsic Value*")
         stk_ext_k = st.slider("K — Rank", 0, 10, 7, key="stk_ext_k")
         stk_ext_s = st.slider("S — Saturation", 0.0, 1.0, 0.7, 0.1, key="stk_ext_s")
         stk_ext_c = st.slider("C — Contingency", 0.0, 1.0, 0.2, 0.1, key="stk_ext_c")
-
+ 
 # ============================================================
 # COMPUTE
 # ============================================================
-
+ 
 options = [
     {
         'name': 'Invest in CD',
@@ -198,31 +200,31 @@ options = [
         ]
     },
 ]
-
+ 
 results, conflict = select_behavior(options, D)
-
+ 
 # ============================================================
 # RESULTS
 # ============================================================
-
+ 
 with result_col:
     st.markdown("### Behavioral Decision Computation")
-
+ 
     enacted = results[0]
-
+ 
     if conflict:
         st.warning("⚠️ CONFLICT CONDITION: Two options have near-equal B* values — hesitation or ambivalence predicted.")
-
+ 
     st.success(f"✅ ENACTED BEHAVIOR: **{enacted['name']}** (B* = {enacted['B_star']})")
-
+ 
     st.markdown("**Ranked Options by B* Value:**")
-
+ 
     df = pd.DataFrame({
         'Option': [r['name'] for r in results],
         'B*': [r['B_star'] for r in results]
     })
     st.bar_chart(df.set_index('Option'))
-
+ 
     st.markdown("**Full Computation:**")
     table_data = []
     for r in results:
@@ -235,23 +237,23 @@ with result_col:
             'B* = D×B': r['B_star']
         })
     st.dataframe(pd.DataFrame(table_data), hide_index=True)
-
+ 
     st.markdown("---")
     st.markdown("""
     ### Demonstrating Invariance
-
+ 
     Expand any option above and adjust its sliders. Notice that:
     - The **same algorithm** runs regardless of what values you enter
     - **Different attribute values** produce different enacted behaviors
     - This demonstrates **invariance** — the process is universal, the inputs vary
-
+ 
     *"The alignment problem may be fundamentally a Rank problem."*
     """)
-
+ 
 # ============================================================
 # FOOTER
 # ============================================================
-
+ 
 st.markdown("---")
 st.markdown("""
 **D.M. Chabon** — Applied Behavioral Science Strategies  
